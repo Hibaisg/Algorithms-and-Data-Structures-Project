@@ -1,0 +1,1535 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main (){
+    int choix , indice , trouve , chercher , nbr_BIS=6 , nbr_BI=5 ;
+    int autre , modif , nb , g1 , g2 , g3 ;
+    int i,k,j,nc, nbr_etud=11,nbr_ajout, verif,recherche;
+    float MoyGenProj_BI , MoyGenProj_BIS , SUB , bis , bi ;
+    char nom_rech[10],spe_rech[9];
+    char c ;
+    float note_assiduite[500]={1,2,3,4,5,6,7,8,9,10,11} ,  note_projet[ 500 ]={1,2,3,4,5,6,7,8,9,10,11} , note_ds[500]={1,2,3,4,5,6,7,8,9,10,11} ,
+    note_examen[500]={1,2,3,4,5,6,7,8,9,10,11} , moy[500];
+    int ABS[500] = {2,3,5,7,6,2,7,8,1,0,2};
+    int GRP[500] = {2,3,1,1,2,1,1,2,1,3,3};
+    char CIN[9] , cin[500][9]={"11111111","22222222","33333333","44444444","55555555","66666666","77777777","88888888","99999999","00000000","10101010"} ;
+    char nom [500][10]= {"GHARAM", "CHROUD", "UUU" , "KKK","SSS","AAA","BBB","CCC","DDD","EEE","FFF"};
+    char prenom [500][10]= {"HIBA", "WEJDENE", "HAJER" , "SYRINE","NOUR","GGG","HHH","III","JJJ","LLL","QQQ"};
+    char spe[500][9]={"LNIG-BIS","LNIG-BI","LNIG-BIS","LNIG-BI","LNIG-BI","LNIG-BIS","LNIG-BIS","LNIG-BIS","LNIG-BIS","LNIG-BI","LNIG-BI"};
+
+
+
+    do{
+        printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||                        MENU                         ||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||                   1-Ajouter                         ||\n");
+		printf("||                   2-Modifier                        ||\n");
+        printf("||                   3-Supprimer                       ||\n");
+        printf("||                   4-Rechercher                      ||\n");
+        printf("||                   5-Autre                           ||\n");
+        printf("||                   6-moyennes et rangs               ||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||                   7-Quitter                         ||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+		printf("||-----------------------------------------------------||\n");
+        printf("\ntapez ici : ");
+        scanf("%d", & choix);
+		switch(choix)
+    	{
+            case 1: // AJOUT
+                printf("\n||-----------------------------------------------------||\n\n");
+                do{
+                    printf("Combien d'%ctudiant vous allez ajouter ? \n" ,130);
+                    printf("Nombre = ");
+                    scanf("%i",&nbr_ajout);
+                }while( nbr_ajout<0 || nbr_ajout>500 );
+                printf("\n||-----------------------------------------------------||\n\n");
+                do{
+                    // CONTROLE DE SAISIE
+                    //CIN
+                    getchar();
+                    do{
+                        printf("CIN de l'%ctudiant: ",130);
+                        gets(cin[nbr_etud]);
+                        // NBR CHIFFRES
+                        verif = 0 ;
+                        if ( strlen(cin[nbr_etud])==8 )
+                        {
+                            verif = 1 ;
+                            // NON RÉPÉTÉ
+                            i = 0 ;
+                            while( i<nbr_etud && verif )
+                            {
+                                verif = 0;
+                                if ( strcmp(cin[nbr_etud],cin[i]) ) verif = 1;
+                                i++;
+                            }
+                            // ENTRE '0' ET '9'
+                            j=0;
+                            while ( (j<8) && verif )
+                            {
+                                verif = 0;
+                                if ( cin[nbr_etud][j]<='9' && cin[nbr_etud][j]>='0' ) verif = 1 ;
+                                j++ ;
+                            }
+                        }
+                    }while ( !verif );
+                    //NOM
+                    do{
+                        printf("Nom de l'%ctudiant (EN MAJUSCULE): ",130);
+                        gets(nom[nbr_etud]);
+                        // CHAINE NON VIDE
+                        if ( strlen(nom[nbr_etud])>2 )
+                        {
+                            // ENTRE 'A' ET 'Z' + ' '
+                            j = 0;
+                            nc = 0;
+                            for ( i=0 ; i<strlen(nom[nbr_etud]) ; i++ )
+                            {
+                                if ( nom[nbr_etud][i] == ' ' )      nc++;
+                                if ( nom[nbr_etud][i]<='Z' && nom[nbr_etud][i]>='A' || nom[nbr_etud][i]==' ' )       j++;
+                            }
+                        }
+                    }while((strlen(nom[nbr_etud])<=2) || (nc==strlen(nom[nbr_etud])) || (j!=strlen(nom[nbr_etud])));
+                    //PRENOM
+                    do{
+                        printf("Pr%cnom de l'%ctudiant (EN MAJUSCULE): ",130,130);
+                        gets(prenom[nbr_etud]);
+                        // CHAINE NON VIDE
+                        if ( strlen(prenom[nbr_etud])>2 )
+                        {
+                            // ENTRE 'A' ET 'Z' + ' '
+                            j = 0;
+                            nc = 0;
+                            for ( i=0 ; i<strlen(prenom[nbr_etud]) ; i++ )
+                            {
+                                if ( prenom[nbr_etud][i] == ' ' )      nc++;
+                                if ( prenom[nbr_etud][i]<='Z' && prenom[nbr_etud][i]>='A' || prenom[nbr_etud][i]==' ' )       j++;
+                            }
+                        }
+                    }while( (strlen(prenom[nbr_etud])<=2) || (nc==strlen(prenom[nbr_etud])) || (j!=strlen(prenom[nbr_etud])) );
+                    //SPECIALITE
+                    do{
+                        printf("Sp%ccialit%c de l'%ctudiant (LNIG-BI/LNIG-BIS): ",130,130,130);
+                        gets(spe[nbr_etud]);
+                    }while( strcmp(spe[nbr_etud],"LNIG-BI") && strcmp(spe[nbr_etud],"LNIG-BIS") );
+                    //ABS
+                    do{
+                        printf("Nombre d'abscence de l'%ctudiant: ",130);
+                        scanf("%i",&ABS[nbr_etud]);
+                    }while ( ABS[nbr_etud]>20 || ABS[nbr_etud]<0 );
+                    //GRP
+                    if(!strcmp(spe[nbr_etud],"LNIG-BI"))
+                    {
+                        do{
+                            printf("Le groupe de l'%ctudiant: ",130);
+                            scanf("%i",&GRP[nbr_etud]);
+                        }while( 1>GRP[nbr_etud] || GRP[nbr_etud]>3 );
+                        do{
+                            printf( "Sa note du devoir surveill%c :  " ,130);
+                            scanf( "%f" , &note_ds[ nbr_etud ] );
+                        }while( note_ds[i]<0 || note_ds[i]>20 );
+                    }
+                    else
+                    {
+                        do{
+                            printf( "Le groupe de l'%ctudiant: ",130 );
+                            scanf( "%i",&GRP[nbr_etud] );
+                        }while( 1>GRP[nbr_etud] || GRP[nbr_etud]>=3 );
+                        do{
+                            printf( "Sa note de l'examen :   " );
+                            scanf( "%f" , &note_examen[ i ] );
+                        }while( note_examen[i]<0 || note_examen[i]>20 );
+                    }
+                    do{
+                        printf( "Sa note d'assiduit%c de :   " ,130);
+                        scanf( "%f" , &note_assiduite[nbr_etud] );
+                    }while( note_assiduite[nbr_etud]<0 || note_assiduite[nbr_etud]>20 );
+                    do{
+                    printf( "Sa note du projet de :   " );
+                    scanf( "%f" , &note_projet[nbr_etud] );
+                    }while( note_projet[nbr_etud]<0 || note_projet[nbr_etud]>20 );
+                    // RAYER DEFINITIVEMENT DE LA LISTE
+                    if (ABS[nbr_etud]==20)
+                    {
+                        printf("\nNombre d'absence : 20\n");
+                        printf("Cet(te) %ctudiant(e) sera ray%c(e) d%cfinitivement de la liste \n",130,130,130);
+                        strcpy( cin[nbr_etud] , cin[i+1] );
+                        strcpy( nom[nbr_etud] , nom[i+1] );
+                        strcpy( prenom[nbr_etud],prenom[i+1] );
+                        ABS[nbr_etud] = ABS[i+1];
+                        strcpy( spe[nbr_etud],spe[i+1] );
+                        GRP[nbr_etud] = GRP[i+1];
+                        note_assiduite[nbr_etud] = note_assiduite[i+1] ;
+                        note_projet[nbr_etud] = note_projet[i+1] ;
+                        note_ds[nbr_etud] = note_ds[i+1] ;
+                        note_examen[nbr_etud] = note_examen[i+1] ;
+                    }
+                    else
+                        {nbr_etud++;}
+                    printf("\n||-----------------------------------------------------||\n\n");
+                    nbr_ajout--;
+                }while( nbr_ajout != 0 );
+                getchar();
+                        break;
+            case 2: //MODIFICATION
+                printf("\n||-----------------------------------------------------||\n");
+                getchar();
+                do{
+                    printf( "\nDonnez le CIN de l'%ctudiant :   " ,130);
+                    gets(CIN);
+                    i=0;
+                    trouve = 0;
+                    while ( i<nbr_etud && !trouve )
+                    {
+                        if ( !strcmp(CIN,cin[i]) )
+                        {
+                            trouve = 1 ;
+                            indice = i;
+                        }
+                        i++;
+                    }
+                    if ( !trouve )	       printf( " CIN invalide \n");
+                } while (!trouve);
+                do{
+                    printf("\n||-------------------------------------------------------||\n");
+                    printf("||         Qu'est ce que vous d%csirez modifier ?         ||\n",130);
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                       1- Nom                          ||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                      2-Pr%cnom                         ||\n",130);
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                 3- Nombre des absences                ||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                    4-sp%ccialit%c                       ||\n",130,130);
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                      5- Groupe                        ||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                       6- CIN                          ||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                  7- Notes d'assiduit%c                 ||\n",130);
+                    printf("||-------------------------------------------------------||\n");
+                    printf("||                  8- Notes du projet                   ||\n");
+                    printf("||-------------------------------------------------------||\n");
+                    if(!strcmp(spe[indice],"LNIG-BI"))
+                    {
+                        printf("||               9-Note du devoir surveill%c              ||\n",130);
+                        printf("||-------------------------------------------------------||\n");
+                    }
+                    if(!strcmp(spe[indice],"LNIG-BIS"))
+                    {
+                        printf("||                  9- Note de l'examen                  ||\n");
+                        printf("||-------------------------------------------------------||\n");
+                    }
+                    printf("\ntapez ici : ");
+                    scanf("%i",&modif);
+                    printf("\n||-------------------------------------------------------||\n\n");
+                    switch(modif)
+                    {
+                        case 1: // NOM
+                            getchar();
+                            do{
+                                printf("\nNouveau nom (EN MAJUSCULE): ");
+                                gets(nom[indice]);
+                                // CHAINE NON VIDE
+                                if ( strlen(nom[indice])>2 )
+                                {
+                                    // ENTRE 'A' ET 'Z' + ' '
+                                    j = 0;
+                                    nc = 0;
+                                    for ( i=0 ; i<strlen(nom[indice]) ; i++ )
+                                    {
+                                        if ( nom[indice][i] == ' ' )      nc++;
+                                        if ( nom[indice][i]<='Z' && nom[indice][i]>='A' || nom[indice][i]==' ' )       j++;
+                                    }
+                                }
+                            }while((strlen(nom[indice])<=2) || (nc==strlen(nom[indice])) || (j!=strlen(nom[indice])));
+                                    break;
+                        case 2: //PRENOM
+                            getchar();
+                            do{
+                                printf("\nNouveau pr%cnom (EN MAJUSCULE): ",130);
+                                gets(prenom[indice]);
+                                // CHAINE NON VIDE
+                                if ( strlen(prenom[indice])>2 )
+                                {
+                                    // ENTRE 'A' ET 'Z' + ' '
+                                    j = 0;
+                                    nc = 0;
+                                    for ( i=0 ; i<strlen(prenom[indice]) ; i++ )
+                                    {
+                                        if ( prenom[indice][i] == ' ' )      nc++;
+                                        if ( prenom[indice][i]<='Z' && prenom[indice][i]>='A' || prenom[indice][i]==' ' )       j++;
+                                    }
+                                }
+                            }while((strlen(prenom[indice])<=2) || (nc==strlen(prenom[indice])) || (j!=strlen(prenom[indice])));
+                                    break;
+                        case 3: //ABSENCE
+                            do{
+                                printf("\nNouveau nombre d'abscence: ");
+                                scanf("%i",&ABS[indice]);
+                            }while ( ABS[indice]>20 || ABS[indice]<0 );
+                            getchar();
+                                    break;
+                        case 4: //SPECIALITE
+                            getchar();
+                            do{
+                                printf("\nNouvelle sp%ccialit%c (LNIG-BI/LNIG-BIS): ",130,130);
+                                gets(spe[indice]);
+                            }while( strcmp(spe[indice],"LNIG-BI") && strcmp(spe[indice],"LNIG-BIS") );
+                                    break;
+                        case 5: //GROUPE
+                            if(!strcmp(spe[indice],"LNIG-BI"))
+                            {
+                                do{
+                                    printf("\nLe groupe de l'%ctudiant: ",130);
+                                    scanf("%i",&GRP[indice]);
+                                }while( 1>GRP[indice] || GRP[indice]>3 );
+                            }
+                            else
+                            {
+                                do{
+                                    printf( "\nLe groupe de l'%ctudiant: ",130 );
+                                    scanf( "%i",&GRP[indice] );
+                                }while( 1>GRP[indice] || GRP[indice]>=3 );
+                            }
+                            getchar();
+                                    break;
+                        case 6: //CIN
+                            getchar();
+                            do{
+                                printf("Nouvelle CIN de l'%ctudiant: ",130);
+                                gets(CIN);
+                                // NBR CHIFFRES
+                                verif = 0 ;
+                                if ( strlen(CIN)==8 )
+                                {
+                                    verif = 1 ;
+                                    // NON RÉPÉTÉ
+                                    i = 0 ;
+                                    while( i<nbr_etud && verif )
+                                    {
+                                        verif = 0;
+                                        if ( strcmp(CIN,cin[i]) )   verif = 1;
+                                        i++;
+                                    }
+                                    // ENTRE '0' ET '9'
+                                    i=0;
+                                    while ( (i<8) && verif )
+                                    {
+                                        verif = 0;
+                                        if ( CIN[i]<='9' && CIN[i]>='0' )   verif = 1;
+                                        i++ ;
+                                    }
+                                }
+                            }while ( !verif );
+                            strcpy(cin[indice],CIN);
+                                    break;
+                        case 7 :
+                            do{
+                                printf( "Donnez la nouvelle note :   " );
+                                scanf( "%f" , &note_assiduite[indice] );
+                            } while( note_assiduite[indice]<0 || note_assiduite[indice]>20 );
+                            getchar();
+                                    break;
+                        case 8 :
+                            do{
+                                printf( "Donnez la nouvelle note :   " );
+                                scanf( "%f" , &note_projet[indice] );
+                            } while( note_projet[indice]<0 || note_projet[indice]>20 );
+                            getchar();
+                                    break;
+                        case 9 :
+                            if(!strcmp(spe[indice],"LNIG-BI"))
+                            {
+                                do{
+                                    printf( "Donnez la nouvelle note :   " );
+                                    scanf( "%f" , &note_ds[indice] );
+                                } while( note_ds[indice]<0 || note_ds[indice]>20 );
+                            }
+                            else
+                            {
+                                do{
+                                    printf( "Donnez la nouvelle note :   " );
+                                    scanf( "%f" , &note_examen[indice] );
+                                } while( note_examen[indice]<0 || note_examen[indice]>20 );
+                            }
+                            getchar();
+                                        break;
+                        default :
+                            printf("||----------------------------------------------------------------||\n");
+                            printf("||                          Choix invalide!                       ||\n");
+                            printf("||----------------------------------------------------------------||\n");
+                    }
+                    if ( ABS[indice] != 20 )
+                    {
+                        printf("\n||-----------------------------------------------------------||\n\n");
+                        printf("Voulez-vous modifier un autre champs? (O/N)\n");
+                        scanf("%c",&c);
+                    }
+                } while ( ( c=='o' || c=='O' ) && ABS[indice] != 20 );
+                if ( ABS[indice] != 20 )
+                    {getchar();}
+                // RAYER DEFINITIVEMENT DE LA LISTE
+                    if (ABS[indice]==20)
+                    {
+                        printf("\nNombre d'absence : 20\n");
+                        printf("Cet(te) %ctudiant(e) sera r%cy%c(e) d%cfinitivement de la liste \n",130,130,130,130);
+                        for ( i=indice ; i<nbr_etud-1 ; i++)
+                        {
+                            strcpy( cin[i] , cin[i+1] );
+                            strcpy( nom[i] , nom[i+1] );
+                            strcpy( prenom[i],prenom[i+1] );
+                            ABS[i] = ABS[i+1];
+                            strcpy( spe[i],spe[i+1] );
+                            GRP[i] = GRP[i+1];
+                            note_assiduite[i] = note_assiduite[i+1] ;
+                            note_projet[i] = note_projet[i+1] ;
+                            note_ds[i] = note_ds[i+1] ;
+                            note_examen[i] = note_examen[i+1] ;
+                        }
+                        if (!strcmp(spe[indice],"LNIG-BI"))         nbr_BI--;
+                        else                                        nbr_BIS--;
+                        nbr_etud--;
+                    }
+                printf("\n||-----------------------------------------------------------||\n\n");
+                        break;
+             case 3://suppression
+                printf("\n||-----------------------------------------------------||\n");
+                getchar();
+                do{
+                    printf( "\nDonnez le CIN de l'%ctudiant :   " ,130);
+                    gets(CIN);
+                    i=0;
+                    trouve = 0;
+                    while ( i<nbr_etud && !trouve )
+                    {
+                        if ( !strcmp(CIN,cin[i]) )
+                        {
+                            trouve = 1 ;
+                            indice = i;
+                        }
+                        i++;
+                    }
+                    if ( !trouve )	       printf( " CIN invalide \n");
+                } while (!trouve);
+                //DECALAGE DES TABLEAUX
+                for ( i=indice ; i<nbr_etud-1 ; i++)
+                {
+                    strcpy( cin[i] , cin[i+1] );
+                    strcpy( nom[i] , nom[i+1] );
+                    strcpy( prenom[i],prenom[i+1] );
+                    ABS[i] = ABS[i+1];
+                    strcpy( spe[i],spe[i+1] );
+                    GRP[i] = GRP[i+1];
+                    note_assiduite[i] = note_assiduite[i+1] ;
+                    note_projet[i] = note_projet[i+1] ;
+                    note_ds[i] = note_ds[i+1] ;
+                    note_examen[i] = note_examen[i+1] ;
+                }
+                nbr_etud --;
+                printf("\n||-----------------------------------------------------||\n\n");
+                        break;
+            case 4://RECHERCHE
+                getchar();
+                do{
+                    printf("\n\n||-------------------------------------------------------------||\n");
+                    printf("||      Selon quel critere voulez-vous chercher l'%ctudiant     ||\n",130);
+                    printf("||-------------------------------------------------------------||\n");
+                    printf("||-------------------------------------------------------------||\n");
+                    printf("||                           1-CIN                             ||\n");
+                    printf("||-------------------------------------------------------------||\n");
+                    printf("||                          2- Nom                             ||\n");
+                    printf("||-------------------------------------------------------------||\n");
+                    printf("||                         3-sp%ccialit%c                        ||\n",130,130);
+                    printf("||-------------------------------------------------------------||\n");
+                    printf("tapez ici : ");
+                    scanf("%d",&chercher);
+                    printf("||-------------------------------------------------------------||\n\n");
+                    getchar();
+                    switch(chercher)
+                    {
+                        case 1: //CIN
+                            recherche = 0;
+                            do{
+                                printf( "Donnez le CIN de l'%ctudiant : ",130);
+                                gets(CIN);
+                                i=0;
+                                while ( i<nbr_etud && !recherche )
+                                {
+                                    if ( !strcmp(CIN,cin[i]) )
+                                    {
+                                        recherche = 1 ;
+                                        printf("\nNom : %s\n",nom[i]);
+                                        printf("Prenom : %s\n",prenom[i]);
+                                        printf("sp%ccialit%c : %s\n",130,130,spe[i]);
+                                        printf("Nombre d'abscence : %i\n",ABS[i]);
+                                        printf("Groupe : %i\n",GRP[i]);
+
+                                    }
+                                    i++;
+                                }
+                                if ( !recherche )       printf( " CIN invalid \n\n");
+                            }while (!recherche);
+                            printf("\n||-----------------------------------------------------------||\n");
+                                    break;
+                        case 2: // NOM
+                            recherche = 0;
+                            do{
+                                printf( "Donnez le nom  de l'%ctudiant : ",130);
+                                gets( nom_rech );
+                                i=0;
+                                while ( i<nbr_etud && !recherche )
+                                {
+                                    if ( !strcmp(nom_rech,nom[i]) )
+                                    {
+                                        recherche = 1 ;
+                                        printf("\nCIN : %20s\n",cin[i]);
+                                        printf("Nom : %s\n",nom[i]);
+                                        printf("Pr%cnom : %s\n",130,prenom[i]);
+                                        printf("sp%ccialit%c : %s\n",130,130,spe[i]);
+                                        printf("Nombre d'abscence : %i\n",ABS[i]);
+                                        printf("Groupe : %i\n",GRP[i]);
+                                    }
+                                    i++;
+                                }
+                                if ( !recherche )printf( " Nom introuvalbe \n\n");
+                            }while (!recherche);
+                            printf("\n||-----------------------------------------------------------||\n");
+                                    break;
+                        case 3: //SPECIALITE
+                            recherche = 0;
+                            do{
+                                printf( "Donnez la sp%cciait%c de l'%ctudiant :",130,130,130);
+                                gets( spe_rech );
+                                i=0;
+                                for( i=0 ; i<nbr_etud ; i++ )
+                                {
+                                    if ( !strcmp(spe_rech,spe[i]) )
+                                    {
+                                        recherche = 1 ;
+                                        printf("\nCIN : %20s\n",cin[i]);
+                                        printf("Nom : %s\n",nom[i]);
+                                        printf("Pr%cnom : %20s\n",130,prenom[i]);
+                                        printf("Nombre d'abscence : %i\n",ABS[i]);
+                                        printf("Groupe : %i\n",GRP[i]);
+                                    }
+                                }
+                                if ( !recherche )printf( " \nSp%ccialit%c invalid \n\n",130,130);
+                            }while (!recherche);
+                            printf("\n||-----------------------------------------------------------||\n");
+                                    break;
+                        default :
+                            printf("||----------------------------------------------------------------||\n");
+                            printf("||----------------------------------------------------------------||\n");
+                            printf("||                          Choix invalide!                       ||\n");
+                            printf("||----------------------------------------------------------------||\n");
+                            printf("||----------------------------------------------------------------||\n");
+                    }
+                    printf("\nVoulez-vous effectuer une nouvelle recherche ? (O/N)\n",130);
+                    scanf("%c",&c);
+                } while (c=='o'||c=='O');
+                printf("\n||-----------------------------------------------------------||\n");
+                getchar();
+                        break;
+
+            case 5: // AUTRE
+                do{
+                    printf("\n\n||-----------------------------------------------------||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||                 Veuillez choisir                    ||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||      1-liste des %ctudiants de chaque sp%ccialit%c     ||\n",130,130,130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||   2-nombre des %ctudiants par groupe et sp%ccialit%c   ||\n",130,130,130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||  3-le groupe qui contient le plus d'%ctudiants dans  ||\n",130);
+                    printf("||  la sp%ccialit%c qui contient le moins d'%ctudiants.   ||\n",130,130,130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||   4- liste des %ctudiants selon une lettre donn%c.    ||\n",130,130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||  5-lettre repr%csentant le plus grand nombre         ||\n",130);
+                    printf("||  d’%ctudiants dont le nom commence par cette lettre. ||\n",130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||                6-le taux d'absent%cisme              ||\n",130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||                7- Renvoie d%cfinitif                 ||\n",130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||                 8-%climination                       ||\n",130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||                 9-Assiduit%c                         ||\n",130);
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||           10-Retourner au menu principale           ||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    printf("||-----------------------------------------------------||\n");
+                    getchar();
+                    printf("tapez ici : ");
+                    scanf("%d", & autre);
+                    printf("\n||-----------------------------------------------------||\n\n\n");
+                    getchar();
+                    switch(autre)
+                    {
+                        case 1:
+                            //CALCUL DE LA MOYENNE
+                            for ( i=0 ; i<nbr_etud ; i++ )
+                            {
+                                //BI
+                                if (!strcmp(spe[i],"LNIG-BI"))
+                                {
+                                    moy[i] = note_assiduite[i]*0.1 + note_projet[i]*0.2 + note_ds[i]*0.7 ;
+                                }
+                                //BIS
+                                if (!strcmp(spe[i],"LNIG-BIS"))
+                                {
+                                    moy[i] = note_assiduite[i]*0.2 + note_projet[i]*0.4 + note_examen[i]*0.4 ;
+                                }
+                            }
+                            //AFFICHAGE DE LA LISTE
+                            printf("liste des %ctudiants de la sp%ccialit%c LNIG-BI\n\n\n",130,130,130);
+                            printf("CIN\t |  pr%cnom  |  nom  |abs| sp%ccialit%c |groupe| N.A | N.P | N.DS | MOY |\n\n",130,130,130);
+                            for( i=0 ; i<nbr_etud ; i++ )
+                            {
+                                if(!strcmp(spe[i],"LNIG-BI"))
+                                {
+                                    printf("%s | ", cin[i]);
+                                    printf("%s | ", nom[i]);
+                                    printf("%s | ", prenom[i]);
+                                    printf("%i | ", ABS[i]);
+                                    printf("%s | ", spe[i]);
+                                    printf("%i | ", GRP[i]);
+                                    printf("%.2f | ", note_assiduite[i]);
+                                    printf("%.2f | ", note_projet[i]);
+                                    printf("%.2f | ", note_ds[i]);
+                                    printf("%.2f | \n", moy[i]);
+                                }
+                            }
+                            printf("\n\n----------------------------------------------------------\n\n");
+                            printf("liste des %ctudiants de la sp%ccialit%c LNIG-BIS\n\n\n",130,130,130);
+                            printf("CIN\t |  pr%cnom  |  nom  |abs| sp%ccialit%c |groupe| N.A | N.P | N.E | MOY |\n\n",130,130,130);
+                            for( i=0 ; i<nbr_etud ; i++){
+                                if(!strcmp(spe[i],"LNIG-BIS"))
+                                {
+                                    printf("%s | ", cin[i]);
+                                    printf("%s | ", nom[i]);
+                                    printf("%s | ", prenom[i]);
+                                    printf("%i | ", ABS[i]);
+                                    printf("%s | ", spe[i]);
+                                    printf("%i | ", GRP[i]);
+                                    printf("%.2f | ", note_assiduite[i]);
+                                    printf("%.2f | ", note_projet[i]);
+                                    printf("%.2f | ", note_examen[i]);
+                                    printf("%.2f | \n", moy[i]);
+                                }
+                            }
+                            printf("\n\n||----------------------------------------------------------------||\n\n");
+                                    break;
+                        case 2: //NBR ETUD
+                            printf("Le nombre des %ctudiants de la sp%ccialit%c LNIG-BI est : ",130,130,130);
+                            nb=0;
+                            g1=0;
+                            g2=0;
+                            g3=0;
+                            for( i=0 ; i<nbr_etud ; i++)
+                            {
+                                if(!strcmp(spe[i],"LNIG-BI"))
+                                {
+                                    nb++;
+                                    if(GRP[i]==1)           g1++;
+                                    else if (GRP[i]==2)     g2++;
+                                    else                    g3++;
+                                }
+                            }
+                            printf("%i",nb);
+                            printf("\n Groupe 1 : %i %ctudiants",g1,130);
+                            printf("\n Groupe 2 : %i %ctudiants",g2,130);
+                            printf("\n Groupe 3 : %i %ctudiants",g3,130);
+
+                            printf("\nLe nombre des %ctudiants de la sp%ccialit%c LNIG-BIS est : ",130,130,130);
+                            nb=0;
+                            g1=0;
+                            g2=0;
+                            for( i=0 ; i<nbr_etud ; i++)
+                            {
+                                if(!strcmp(spe[i],"LNIG-BIS"))
+                                {
+                                    nb++;
+                                    if(GRP[i]==1)       g1++;
+                                    else                g2++;
+                                }
+                            }
+                            printf("%i",nb);
+                            printf("\n Groupe 1 : %i %ctudiants",g1,130);
+                            printf("\n Groupe 2 : %i %ctudiants",g2,130);
+                            printf("\n\n||----------------------------------------------------------------||\n\n");
+                                    break;
+
+                    case 3:
+		for( i=0 ; i<nbr_etud ; i++){
+                        if(!strcmp(spe[i],"LNIG-BIS")){
+                            n1++;}
+                        if(!strcmp(spe[i],"LNIG-BI")){
+                            n2++;}}
+                    if (n1<n2){
+                        for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BIS"))&&(GRP[i]==1)){
+                            g1++;}
+                        if((!strcmp(spe[i],"LNIG-BIS"))&&(GRP[i]==2)){
+                            g2++;}}
+                        if(g1>g2){
+                            printf("le groupe 1 est le groupe qui contient le plus d’étudiants dans la spécialité 'LNIG-BIS' qui contient le moins d’étudiants");
+                        }
+                        else{printf("le groupe 2 est le groupe qui contient le plus d’étudiants dans la spécialité 'LNIG-BIS' qui contient le moins d’étudiants");
+                        }
+                        
+                    }
+                    else {
+                        for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==1)){
+                            g1++;}
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==2)){
+                            g2++;}
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==3)){
+                            g3++;}}
+                        if((g1>g2)&&(g1>g3)){
+                            printf("le groupe 1 est le groupe qui contient le plus d’étudiants dans la spécialité 'LNIG-BI' qui contient le moins d’étudiants");}
+                        if((g2>g1)&&(g2>g3)){
+                            printf("le groupe 2 est le groupe qui contient le plus d’étudiants dans la spécialité 'LNIG-BI' qui contient le moins d’étudiants");}
+                        if((g3>g1)&&(g3>g2)){
+                            printf("le groupe 3 est le groupe qui contient le plus d’étudiants dans la spécialité 'LNIG-BI' qui contient le moins d’étudiants");}
+                    }
+                    break;
+                    case 4:
+do{
+                    printf("Donnez une lettre:");
+                    scanf("%c",&lettre);
+		getchar();
+                    }while((lettre<'A')||(lettre>'Z'));
+                    printf("liste des %ctudiants de la sp%ccialit%c LNIG-BI\n",130,130,130);
+                    nb=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(Nom[i][0]==lettre)){
+                            nb++;
+                            printf("\n\n%s \t", cin[i]);
+                            printf("%s \t", Nom[i]);
+                            printf("%s \t", prenom[i]);
+                            printf("%s \t", spe[i]);
+                            printf("%i \t", ABS[i]);
+                            printf("%i \t", GRP[i]);}}
+                    if (nb==0) {printf("\nil n y a pas un étudiant dont le nom commence par cette lettre.");}
+                            
+                    printf("\n----------------------------------------------------------\n");
+                    printf("liste des %ctudiants de la sp%ccialit%c LNIG-BI\n",130,130,130);
+                    nb=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        
+                        if((!strcmp(spe[i],"LNIG-BIS"))&&(Nom[i][0]==lettre)){ //condition debut lettre
+                            nb++;
+                            printf("\n\n%s \t", cin[i]);
+                            printf("%s \t", Nom[i]);
+                            printf("%s \t", prenom[i]);
+                            printf("%s \t", spe[i]);
+                            printf("%i \t", ABS[i]);
+                            printf("%i \t", GRP[i]);}}
+                    if (nb==0) {printf("\nil n y a pas un étudiant dont le nom commence par cette lettre.");}
+                    
+                    break;
+                    case 5: 
+printf("sp%ccialit%c LNIG-BI\n",130,130);
+                    printf("\ngroupe 1\n");
+                    nb=0;
+                    k=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==1)){
+                            nb++;
+                            while(k<nb){
+                                grp1bi[k]=Nom[i][0];
+                                k++;}}}
+                    n=1;
+                    j=1;
+                    for( k=j ; k<nb ; k++){
+                        if (grp1bi[j-1]==grp1bi[k]){
+                            n++;
+                            nb_occ=n;
+                        }
+                        if (nb_occ>n){lettre_occ[j-1]=grp1bi[j-1];}
+                        j++;}
+                        for(k=0 ; k<nb ; k++){
+                        printf("'%c' est la (les)lettre(s) représentant le plus grand nombre d’étudiants dont le nom commence par cette lettre.\n",lettre_occ[k]);}
+                    if (nb_occ==1) {printf("\nil n y a pas une lettre plus occurante que les autres\n");}
+                    printf("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n");
+                    printf("\ngroupe 2\n");
+                    nb=0;
+                    k=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==2)){
+                            nb++;
+                            while(k<nb){
+                                grp2bi[k]=Nom[i][0];
+                                k++;}}}
+                    n=1;
+                    j=1;
+                    for( k=j ; k<nb ; k++){
+                        if (grp2bi[j-1]==grp2bi[k]){
+                            n++;
+                            nb_occ=n;
+                        }
+                        if (nb_occ>n){lettre_occ[j-1]=grp2bi[j-1];}
+                        j++;}
+                        for(k=0 ; k<nb ; k++){
+                        printf("'%c' est la (les)lettre(s) représentant le plus grand nombre d’étudiants dont le nom commence par cette lettre.\n",lettre_occ[k]);}
+                    if (nb_occ==1) {printf("\nil n y a pas une lettre plus occurante que les autres\n");}
+                    printf("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n");
+                    printf("\ngroupe 3\n");
+                    nb=0;
+                    k=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BI"))&&(GRP[i]==3)){
+                            nb++;
+                            while(k<nb){
+                                grp3bi[k]=Nom[i][0];
+                                k++;}}}
+                    n=1;
+                    j=1;
+                    for( k=j ; k<nb ; k++){
+                        if (grp3bi[j-1]==grp3bi[k]){
+                            n++;
+                            nb_occ=n;
+                        }
+                        if (nb_occ>n){lettre_occ[j-1]=grp3bi[j-1];}
+                        j++;}
+                        for(k=0 ; k<nb ; k++){
+                        printf("'%c' est la (les)lettre(s) représentant le plus grand nombre d’étudiants dont le nom commence par cette lettre.\n",lettre_occ[k]);}
+                    if (nb_occ==1) {printf("\nil n y a pas une lettre plus occurante que les autres\n");}
+                    printf("\n----------------------------------------------------------\n");
+                    printf(" sp%ccialit%c LNIG-BIS\n",130,130);
+                    printf("\ngroupe 1\n");
+                    nb=0;
+                    k=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BIS"))&&(GRP[i]==1)){
+                            nb++;
+                            while(k<nb){
+                                grp1bis[k]=Nom[i][0];
+                                k++;}}}
+                    n=1;
+                    j=1;
+                    for( k=j ; k<nb ; k++){
+                        if (grp1bis[j-1]==grp1bis[k]){
+                            n++;
+                            nb_occ=n;
+                        }
+                        if (nb_occ>n){lettre_occ[j-1]=grp1bis[j-1];}
+                        j++;}
+                        for(k=0 ; k<nb ; k++){
+                        printf("'%c' est la (les)lettre(s) représentant le plus grand nombre d’étudiants dont le nom commence par cette lettre.\n",lettre_occ[k]);}
+                    if (nb_occ==1) {printf("\nil n y a pas une lettre plus occurante que les autres\n");}
+                    printf("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n");
+                    printf("\ngroupe 2\n");
+                    nb=0;
+                    k=0;
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if((!strcmp(spe[i],"LNIG-BIS"))&&(GRP[i]==2)){
+                            nb++;
+                            while(k<nb){
+                                grp2bis[k]=Nom[i][0];
+                                k++;}}}
+                    n=1;
+                    j=1;
+                    for( k=j ; k<nb ; k++){
+                        if (grp2bis[j-1]==grp2bis[k]){
+                            n++;
+                            nb_occ=n;
+                        }
+                        if (nb_occ>n){lettre_occ[j-1]=grp2bis[j-1];}
+                        j++;}
+                        for(k=0 ; k<nb ; k++){
+                        printf("'%c' est la (les)lettre(s) représentant le plus grand nombre d’étudiants dont le nom commence par cette lettre.\n",lettre_occ[k]);}
+                    if (nb_occ==1) {printf("\nil n y a pas une lettre plus occurante que les autres\n");}
+	                break;
+  	                case 6:   
+etud_BI=0;
+    s_abs=0;
+    for( i=0 ; i<nbr_etud ; i++){
+        if(!strcmp(spe[i],"LNIG-BI")){
+            etud_BI++;
+            s_abs+=ABS[i];}}
+            printf("le taux d'abscenteisme de LNIG-BI : ");
+            printf("%i%c\n",(s_abs*100)/(etud_BI*20),37);
+    etud_BIS=0;
+    s_abs=0;
+    for( i=0 ; i<nbr_etud ; i++){
+        if(!strcmp(spe[i],"LNIG-BIS")){
+            etud_BIS++;
+            s_abs+=ABS[i];}}
+            printf("le taux d'abscenteisme de LNIG-BIS: ");
+            printf("%i%c\n",(s_abs*100)/(etud_BIS*20),37);
+           
+
+ 
+
+      	            break;
+                    case 7:
+	printf("la liste des étudiants qui n’ont jamais assisté:\n");
+                    for( i=0 ; i<nbr_etud ; i++){
+                        if(ABS[i]==20)
+                        {
+                            printf("\n\n%s \t", cin[i]);
+                            printf("%s \t", Nom[i]);
+                            printf("%s \t", prenom[i]);
+                            printf("%s \t", spe[i]);
+                            printf("%i \t", ABS[i]);
+                            printf("%i \t", GRP[i]); 
+                        }
+                    break;
+
+                    case 8:
+printf("la liste des etudiants elimines:\n");
+            for( i=0 ; i<nbr_etud ; i++){
+                if(ABS[i]>=6){
+                printf("\n\n%s \t", cin[i]);
+                printf("%s \t", Nom[i]);
+                printf("%s \t", prenom[i]);
+                printf("%s \t", spe[i]);
+                printf("%i \t", ABS[i]);
+                printf("%i \t", GRP[i]);
+                }}
+
+                    break;
+                    case 9:
+printf("la liste des etudiants les plus assidus. :\n");
+            for( i=0 ; i<nbr_etud ; i++){
+                if(ABS[i]==0){
+                printf("\n\n%s \t", cin[i]);
+                printf("%s \t", Nom[i]);
+                printf("%s \t", prenom[i]);
+                printf("%s \t", spe[i]);
+                printf("%i \t", ABS[i]);
+                printf("%i \t", GRP[i]);
+                }}
+
+
+                    break; 
+                    case 10://Quitter
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||                          AU REVOIR !                           ||\n");
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||----------------------------------------------------------------||\n");
+		            break;
+        	        default :
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||                          Choix invalide!                       ||\n");
+                        printf("||----------------------------------------------------------------||\n");
+                        printf("||----------------------------------------------------------------||\n");
+                }
+                if(question!=10){
+                do{
+                printf("voulez-vous retournez au menu?\n");
+                printf("tapez o ou n \n");
+                getchar();
+                scanf("%c",&c);
+                }while((c!='o')||(c!='O')||(c!='n')||(c=='N'));}
+            }while(((c=='o')||(c=='O'))&&(choix != 10)); // retournez ll menu  
+
+            if(question!=10){
+            printf("||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||                          AU REVOIR !                           ||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");}
+            break;
+            
+            case 7://Quitter
+            printf("\n||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||                          AU REVOIR !                           ||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");
+		    break;
+    default :
+            printf("\n||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||                          Choix invalide!                       ||\n");
+            printf("||----------------------------------------------------------------||\n");
+            printf("||----------------------------------------------------------------||\n");
+            getchar();
+    }
+    if(choix!=7)
+    {
+        printf("\nVoulez-vous retournez au MENU ? (O/N)\n");
+        scanf("%c",&c);
+    }
+    }while(((c=='o')||(c=='O'))&&(choix != 7)); // retournez ll menu
+
+    if( choix!=7 )
+    {
+        printf("\n||----------------------------------------------------------------||\n");
+        printf("||----------------------------------------------------------------||\n");
+        printf("||                          AU REVOIR !                           ||\n");
+        printf("||----------------------------------------------------------------||\n");
+        printf("||----------------------------------------------------------------||\n");
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//saisie des note de la matière soa
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    int nbr_etud=11 , i , S , note , trouve=0 , indice;
+    float note_assiduite[11] ,  note_projet[ 11 ] , note_ds[11] , note_examen[11];
+    char CIN[9] , cin[500][9]={"01234567","12345678","23456789","34567890","45678901","56789012","67890123","78901234","89012345","90123456","10222222"} ,
+    nom[500][20]={"AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ","KKK"} ,
+    prenom[500][20]={"BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ","KKK","AAA"} ,
+    spe[500][9]={"LNIG-BIS","LNIG-BI","LNIG-BI","LNIG-BIS","LNIG-BIS","LNIG-BI","LNIG-BIS","LNIG-BIS","LNIG-BI","LNIG-BI","LNIG-BIS"};
+
+    do{
+        printf( "choisir 1 pour  y ac%ccder aux notes des %ctudiants de la sp%ccialit%c BI \n" ,130,130,130,130);
+        printf( "choisir 2 pour  y ac%ccder aux notes des %ctudiants de la sp%ccialit%c BIS \n" ,130,130,130,130);
+        printf("votre choix :  ");
+        scanf("%i", &S );
+        if ( S != 1 && S != 2 )	printf( "\n \n Veuillez choisir entre 1 et 2 \n \n" );
+    }while ( S != 1 && S != 2 );
+
+    if ( S==1 ) {
+        for ( i=0 ; i<nbr_etud ; i++ ) {
+            if (!strcmp(spe[i],"LNIG-BI")){
+                do{ printf( "note d'assiduit%c de %s %s :   " ,130, nom[i], prenom[i] );
+                      scanf( "%f" , &note_assiduite[i] );
+                } while( note_assiduite[i]<0 || note_assiduite[i]>20 );
+
+                do{ printf( "note du projet de %s %s :   " ,nom[i], prenom[i] );
+                    scanf( "%f" , &note_projet[i] );
+                } while( note_projet[i]<0 || note_projet[i]>20 );
+
+                do{ printf( "note du devoir surveill%c de %s %s :   " ,130, nom[i], prenom[i] );
+                    scanf( "%f" , &note_ds[ i ] );
+                } while( note_ds[i]<0 || note_ds[i]>20 );	}}}
+//RETOURNER!!!!
+    if ( S==2 ) {
+        for ( i=0 ; i<nbr_etud ; i++ ) {
+            if (!strcmp(spe[i],"LNIG-BIS")){
+                    printf("HERE %i \n",i);                                      //1 4 5 7 8  11
+                do{ printf( "note d'assiduit%c de %s %s :   " ,130, nom[i], prenom[i] );
+                    scanf( "%f" , &note_assiduite[i] );
+                } while( note_assiduite[i]<0 || note_assiduite[i]>20 );
+
+                do{ printf( "note du projet de %s %s :   " ,nom[i], prenom[i] );
+                    scanf( "%f" , &note_projet[i] );
+                } while( note_projet[i]<0 || note_projet[i]>20 );
+                
+                do{ printf( "note de l'examen de %s %s :   " ,nom[i], prenom[i] );
+                    scanf( "%f" , &note_examen[ i ] );
+                } while( note_examen[i]<0 || note_examen[i]>20 );	}}}
+//RETOURNER!!!!
+    
+
+
+    return 0;
+}
+
+
+
+//MODIFICATION DES NOTES
+
+//SAISIE DE LA SPECIALITE
+    do{
+        printf( "\n \nchoisir 1 pour ac%ccder aux notes des %ctudiants de la sp%ccialit%c BI \n" ,130,130,130,130);
+        printf( "choisir 2 pour ac%ccder aux notes des %ctudiants de la sp%ccialit%c BIS \n" ,130,130,130,130);
+        printf("\n votre choix :  ");
+        scanf("%i", &S );
+        if ( S != 1 && S != 2 )	printf( "\n \n Veuillez choisir entre 1 et 2" );
+    }while ( S != 1 && S != 2 );
+
+//BI
+//CIN
+    if ( S==1 ) {
+        do{
+            printf( "\ndonnez le CIN de l'%ctudiant :   " ,130);
+            scanf( "%8s", CIN);
+            i=0;
+            while ( i<nbr_etud && !trouve ) {
+                if ( !strcmp(CIN,cin[i]) && !strcmp(spe[i],"LNIG-BI") )	{
+                    trouve = 1 ;
+                    indice = i;}
+                    i++; }
+            if ( !trouve )	       printf( " CIN invalid \n");
+        } while (!trouve);
+//MENU
+        do{
+            printf( "\n \nchoisir 1 pour ac%ccder aux notes d'assiduit%c \n" ,130,130);
+            printf( "choisir 2 pour ac%ccder aux notes du projet \n" ,130);
+            printf( "choisir 3 pour ac%ccder aux notes du devoir surveill%c \n" ,130,130);
+            printf("votre choix :  ");
+            scanf( "%i" , &note);
+            if ( note<1 || note>3 )     printf( "\n\n veuillez choisir entre 1, 2 et 3" );
+        } while ( note<1 || note>3 );
+
+        switch (note) {
+            case 1 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_assiduite[indice] );
+                        } while( note_assiduite[indice]<0 || note_assiduite[indice]>20 );
+                          break;
+            case 2 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_projet[indice] );
+                        } while( note_projet[indice]<0 || note_projet[indice]>20 );
+                          break;
+            case 3 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_ds[indice] );
+                        } while( note_ds[indice]<0 || note_ds[indice]>20 );
+                          break;}}
+//RETOURNER !!!
+
+//BIS
+//CIN
+    if ( S==2 ) {
+        trouve = 0;
+        do{
+            printf( "\ndonnez le CIN de l'%ctudiant :   " ,130);
+            scanf( "%8s", CIN);
+            i=0;
+            while ( i<nbr_etud && !trouve ) {
+                if ( !strcmp(CIN,cin[i]) && !strcmp(spe[i],"LNIG-BIS") )	{
+                    trouve = 1 ;
+                    indice = i;}
+                    i++; }
+            if ( !trouve )	       printf( " CIN invalid \n");
+        } while (!trouve);
+//MENU
+        do{
+            printf( "\n \nchoisir 1 pour ac%ccder aux notes d'assiduit%c \n" ,130,130);
+            printf( "choisir 2 pour ac%ccder aux notes du projet \n" ,130);
+            printf( "choisir 3 pour ac%ccder aux notes de l'examen \n" ,130);
+            printf("votre choix :  ");
+            scanf( "%i" , &note);
+            if ( note<1 || note>3 )     printf( "\n\n veuillez choisir entre 1, 2 et 3" );
+        } while ( note<1 || note>3 );
+
+        switch (note) {
+            case 1 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_assiduite[indice] );
+                        } while( note_assiduite[indice]<0 || note_assiduite[indice]>20 );
+                          break;
+            case 2 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_projet[indice] );
+                        } while( note_projet[indice]<0 || note_projet[indice]>20 );
+                          break;
+            case 3 :  do{	printf( "Donnez la nouvelle note :   " );
+                        scanf( "%f" , &note_examen[indice] );
+                        } while( note_examen[indice]<0 || note_examen[indice]>20 );
+                          break;}}
+//RETOURNER !!!
+
+
+
+// CALCUL DE LA MOYENNE
+
+    for ( i=0 ; i<nbr_etud ; i++ ){
+        //BI
+        if (!strcmp(spe[i],"LNIG-BI")){
+            moy[i] = note_assiduite[i]*0.1 + note_projet[i]*0.2 + note_ds[i]*0.7 ;}
+        //BIS
+        if (!strcmp(spe[i],"LNIG-BIS")){
+            moy[i] = note_assiduite[i]*0.2 + note_projet[i]*0.4 + note_examen[i]*0.4 ;}
+    }
+
+
+
+//SUPPRESSION
+    //CHERCHER SON CIN
+    trouve = 0;
+    do{
+        printf( "\nDonnez le CIN de l'%ctudiant :   " ,130);
+        scanf( "%8s", CIN);
+        i=0;
+        while ( i<nbr_etud && !trouve ) {
+            if ( !strcmp(CIN,cin[i]) )	{
+                trouve = 1 ;
+                indice = i;}
+                i++; }
+        if ( !trouve )	       printf( " CIN invalid \n");
+    } while (!trouve);
+
+    //DECALAGE DES TABLEAUX
+    for ( i=indice ; i<nbr_etud-1 ; i++) {
+        strcpy( cin[i] , cin[i+1] );
+        strcpy( nom[i] , nom[i+1] );
+        strcpy( prenom[i],prenom[i+1] );
+        ABS[i] = ABS[i+1];
+        strcpy( spe[i],spe[i+1] );
+        GRP[i] = GRP[i+1];
+        note_assiduite[i] = note_assiduite[i+1] ;
+        note_projet[i] = note_projet[i+1] ;
+        note_ds[i] = note_ds[i+1] ;
+        note_examen[i] = note_examen[i+1] ;
+        moy[i] = moy[i+1] ;}
+    nbr_etud -= 1;
+//RETOURNER !!!
+
+
+//MEILLEURE NOTE PROJET
+    max = 0;
+    printf("\n\n l'(les)%ctudiant(s) ayant la meilleure note de projet : \n",130);
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( note_projet[i] > max )    max = note_projet[i] ;}
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( note_projet[i] == max ) {
+            printf("\nCIN : %s \n", cin[i]) ;
+            printf("Nom et Pr%cnom : %s %s \n",130,nom[i],prenom[i]) ;
+            printf("sp%ccialit%c : %s \n",130,130,spe[i]) ;
+            printf("groupe : %i \n", GRP[i]) ;
+            printf("note du projet : %.2f \n", note_projet[i]) ; }}
+
+
+
+//MEILLEURE MOYENNE
+    max = 0;
+    printf("\n\n l'(les)%ctudiant(s) ayant la meilleure moyenne en sao : \n",130);
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( moy[i] > max )     max = moy[i] ;}
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( moy[i] == max ) {
+            printf("\nCIN : %s \n", cin[i]) ;
+            printf("Nom et Pr%cnom : %s %s \n",130,nom[i],prenom[i]) ;
+            printf("sp%ccialit%c : %s \n",130,130,spe[i]) ;
+            printf("groupe : %i \n", GRP[i]) ;
+            printf("moyenne : %.2f \n", moy[i]) ; }}
+
+
+
+//LISTE DE CEUX QUI N'ONT PAS EU LA MOYENNE
+    printf("\n\n l'(les)%ctudiant(s) de la sp%ccialit%c 'BI' qui n'ont pas eu la moyenne : \n",130,130,130);
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( moy[i] < 10 && !strcmp(spe[i],"LNIG-BI") ) {
+            printf("\nCIN : %s \t", cin[i]) ;
+            printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+            printf("sp%ccialit%c : %s \t",130,130,spe[i]) ;
+            printf("groupe : %i \t", GRP[i]) ;
+            printf("moyenne : %.2f \n", moy[i]) ; }}
+
+    printf("\n\n l'(les)%ctudiant(s) de la sp%ccialit%c 'BIS' qui n'ont pas eu la moyenne : \n",130,130,130);
+    for ( i=0 ; i<nbr_etud ; i++) {
+        if ( moy[i] < 10 && !strcmp(spe[i],"LNIG-BIS") ) {
+            printf("\nCIN : %s \t", cin[i]) ;
+            printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+            printf("sp%ccialit%c : %s \t",130,130,spe[i]) ;
+            printf("groupe : %i \t", GRP[i]) ;
+            printf("moyenne : %.2f \n", moy[i]) ; }}
+
+
+
+
+//LISTE DE CEUX QUI ONT LA MOYENNE
+for( i=0 ; i<nbr_etud ; i++)  if ( !strcmp(spe[i],"LNIG-BI") )   GRP[i] += 2;
+
+    permut = 1;
+    while ( permut )
+    {
+        permut = 0;
+        for( i=0 ; i<(nbr_etud-1) ; i++)
+        {
+            if ( GRP[i]>GRP[i+1] )
+            {
+               strcpy(aux,spe[i]);
+               strcpy(spe[i],spe[i+1]);
+               strcpy(spe[i+1],aux);
+
+               strcpy(aux,cin[i]);
+               strcpy(cin[i],cin[i+1]);
+               strcpy(cin[i+1],aux);
+
+               strcpy(aux,nom[i]);
+               strcpy(nom[i],nom[i+1]);
+               strcpy(nom[i+1],aux);
+
+               strcpy(aux,prenom[i]);
+               strcpy(prenom[i],prenom[i+1]);
+               strcpy(prenom[i+1],aux);
+
+               sub = ABS[i];
+               ABS[i] = ABS[i+1];
+               ABS[i+1] = sub;
+
+               sub = GRP[i];
+               GRP[i] = GRP[i+1];
+               GRP[i+1] = sub;
+
+               SUB = note_assiduite[i];
+               note_assiduite[i] = note_assiduite[i+1];
+               note_assiduite[i+1] = SUB;
+
+               SUB = note_projet[i];
+               note_projet[i] = note_projet[i+1];
+               note_projet[i+1] = SUB;
+
+               SUB = note_ds[i];
+               note_ds[i] = note_ds[i+1];
+               note_ds[i+1] = SUB;
+
+               SUB = note_examen[i];
+               note_examen[i] = note_examen[i+1];
+               note_examen[i+1] = SUB;
+
+               SUB = moy[i];
+               moy[i] = moy[i+1];
+               moy[i+1] = SUB;
+
+               permut = 1;
+            }
+        }
+    }
+    
+    for( i=0 ; i<nbr_etud ; i++)
+    {
+        printf("\n\n%s \t", cin[i]);
+        printf("%s \t", nom[i]);
+        printf("%s \t", prenom[i]);
+        printf("%s \t", spe[i]);
+        printf("%i \t", ABS[i]);
+        printf("%i \t", GRP[i]);
+        printf("%.2f \t", note_assiduite[i]);
+        printf("%.2f \t", note_projet[i]);
+        printf("%.2f \t", note_ds[i]);
+        printf("%.2f \t", note_examen[i]);
+        printf("%.2f \n", moy[i]);
+    }
+
+    dit = 0;
+    for ( i=0 ; i<nbr_etud ; i++ )
+    {
+        if ( moy[i] >= 10)
+        {
+            if ( dit == 0 && !strcmp(spe[i],"LNIG-BIS") )
+            {
+                printf("\n\n>> l'(les)%ctudiant(s) de la sp%ccialit%c 'BIS' qui ont eu la moyenne : \n",130,130,130);
+                dit = 1 ;
+            }
+            else if ( (dit == 0 || dit == 1) && !strcmp(spe[i],"LNIG-BI") )
+            {
+                printf("\n\n>> l'(les)%ctudiant(s) de la sp%ccialit%c 'BI' qui ont eu la moyenne : \n",130,130,130);
+                dit = 2 ;
+            }
+            
+            if ( GRP[i] == 1 )
+            {
+                printf("\nGroupe 1:  CIN : %s \t", cin[i]) ;
+                printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+                printf("moyenne : %.2f \n\n", moy[i]) ;
+                XYZ[0]++;
+            }
+            else if ( GRP[i] == 2 )
+            {
+                printf("\nGroupe 2:  CIN : %s \t", cin[i]) ;
+                printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+                printf("moyenne : %.2f \n\n", moy[i]) ;
+                XYZ[1]++;
+            }
+            if ( GRP[i] == 3 )
+            {
+                printf("\nGroupe 1:  CIN : %s \t", cin[i]) ;
+                printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+                printf("moyenne : %.2f \n\n", moy[i]) ;
+                XYZ[2]++;
+            }
+            else if ( GRP[i] == 4 )
+            {
+                printf("\nGroupe 2:  CIN : %s \t", cin[i]) ;
+                printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+                printf("moyenne : %.2f \n\n", moy[i]) ;
+                XYZ[3]++;
+            }
+            else if ( GRP[i] == 5 )
+            {
+                printf("\nGroupe 3:  CIN : %s \t", cin[i]) ;
+                printf("Nom et Pr%cnom : %s %s \t",130,nom[i],prenom[i]) ;
+                printf("moyenne : %.2f \n\n", moy[i]) ;
+                XYZ[4]++;
+            }
+        }
+    }
+    
+    if ( dit == 0 )       printf("\n\n>> Aucun %ctudiants n'a eu la moyenne \n" ,130);
+    else
+    {
+        min = XYZ[0] ;
+        for ( i=0 ; i<5 ; i++)
+            if ( XYZ[i]<min )        min = XYZ[i];
+        
+        printf( "\n\n>> le(s) groupe(s) qui contien(nen)t le moins d'%ctudiants ayant eu la moyenne : \n\n",130 );
+
+        for ( i=0 ; i<5 ; i++ )
+        {
+            printf("%i\n", XYZ[i]==min );
+            if ( XYZ[i]==min )
+            {
+                if ( i<2 )           printf( "Groupe %i , sp%ccialit%c 'LNIG-BIS' \n",i+1,130,130 );
+                else                 printf( "Groupe %i , sp%ccialit%c 'LNIG-BI' \n",i-1,130,130 );
+            }
+        }
+    }
+
+    
+    
+    
+    for( i=0 ; i<nbr_etud ; i++)  if ( !strcmp(spe[i],"LNIG-BI") )   GRP[i] -= 2;
+    for( i=0 ; i<nbr_etud ; i++)
+    {
+        printf("\n\n%s \t", cin[i]);
+        printf("%s \t", nom[i]);
+        printf("%s \t", prenom[i]);
+        printf("%s \t", spe[i]);
+        printf("%i \t", ABS[i]);
+        printf("%i \t", GRP[i]);
+        printf("%.2f \t", note_assiduite[i]);
+        printf("%.2f \t", note_projet[i]);
+        printf("%.2f \t", note_ds[i]);
+        printf("%.2f \t", note_examen[i]);
+        printf("%.2f \n", moy[i]);
+    }
+
+    return 0;
+}
+
+
+//MEILLEURE MOYENNE GENERALE EN PROJET
+MoyGenProj_BI = 0;
+    for ( i=0 ; i<nbr_etud ; i++)
+    {
+        if ( !strcmp(spe[i],"LNIG-BI") )
+        {
+            MoyGenProj_BI += ( note_projet[i] / nbr_BI);
+        }
+    }
+    MoyGenProj_BIS = 0 ;
+    for ( i=0 ; i<nbr_etud ; i++)
+    {
+        if ( !strcmp(spe[i],"LNIG-BIS") )
+        {
+            MoyGenProj_BIS += (note_projet[i] / nbr_BIS) ;
+        }
+    }
+    if ( MoyGenProj_BI > MoyGenProj_BIS )       printf("\t\n\n>>La 3eme LNIG-BI a la meilleure moyenne generale en projet : %.2f\n", MoyGenProj_BI );
+    else if ( MoyGenProj_BIS > MoyGenProj_BI )       printf("\t\n\n>>La 3eme LNIG-BIS a la meilleure moyenne generale en projet : %.2f\n", MoyGenProj_BIS );
+    else                                        printf("\t\n\n>>LEs deux specialit%c on la meme moyenne generale en projet : %.2f\n", 130, MoyGenProj_BIS );
+
+
+
+
+
+//RANG PAR SPECIALITE
+    for( i=0 ; i<nbr_etud ; i++)  if ( !strcmp(spe[i],"LNIG-BI") )   GRP[i] += 2;
+
+    permut = 1;
+    while ( permut )
+    {
+        permut = 0;
+        for( i=0 ; i<(nbr_etud-1) ; i++)
+        {
+            if ( moy[i] < moy[i+1] )
+            {
+               strcpy(aux,spe[i]);
+               strcpy(spe[i],spe[i+1]);
+               strcpy(spe[i+1],aux);
+
+               strcpy(aux,cin[i]);
+               strcpy(cin[i],cin[i+1]);
+               strcpy(cin[i+1],aux);
+
+               strcpy(aux,nom[i]);
+               strcpy(nom[i],nom[i+1]);
+               strcpy(nom[i+1],aux);
+
+               strcpy(aux,prenom[i]);
+               strcpy(prenom[i],prenom[i+1]);
+               strcpy(prenom[i+1],aux);
+
+               sub = ABS[i];
+               ABS[i] = ABS[i+1];
+               ABS[i+1] = sub;
+
+               sub = GRP[i];
+               GRP[i] = GRP[i+1];
+               GRP[i+1] = sub;
+
+               SUB = note_assiduite[i];
+               note_assiduite[i] = note_assiduite[i+1];
+               note_assiduite[i+1] = SUB;
+
+               SUB = note_projet[i];
+               note_projet[i] = note_projet[i+1];
+               note_projet[i+1] = SUB;
+
+               SUB = note_ds[i];
+               note_ds[i] = note_ds[i+1];
+               note_ds[i+1] = SUB;
+
+               SUB = note_examen[i];
+               note_examen[i] = note_examen[i+1];
+               note_examen[i+1] = SUB;
+
+               SUB = moy[i];
+               moy[i] = moy[i+1];
+               moy[i+1] = SUB;
+
+               permut = 1;
+            }
+        }
+    }
+    rangSPE[0] = 1 ;
+    for( i=1 ; i<nbr_etud ; i++)
+    {
+        if ( moy[i] == moy[i-1] )       rangSPE[i] = rangSPE[i-1];
+        else                            rangSPE[i] = rangSPE[i-1] + 1;
+    }   
+    
+    for( i=0 ; i<nbr_etud ; i++)
+    {
+        printf("%s \t", cin[i]);
+        printf("%s \t", nom[i]);
+        printf("%s \t", prenom[i]);
+        printf("%s \t", spe[i]);
+        printf("%i \t", ABS[i]);
+        printf("%i \t", GRP[i]);
+        printf("%.2f \t", note_assiduite[i]);
+        printf("%.2f \t", note_projet[i]);
+        printf("%.2f \t", note_ds[i]);
+        printf("%.2f \t", note_examen[i]);
+        printf("%.2f \t", moy[i]);
+        printf("%i \n", rangSPE[i]);
+    }
